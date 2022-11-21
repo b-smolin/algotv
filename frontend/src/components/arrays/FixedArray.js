@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Stage, Layer, Rect, Text } from "react-konva";
 import "./fixed.css";
 
 function FixedArray({ props }) {
