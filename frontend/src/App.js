@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import axios from "axios";
+import FixedArray from "./components/arrays/FixedArray";
 
 function App() {
+  const [sortSteps, setSortSteps] = useState([]);
+
+  function getSteps() {
+    axios({
+      method: "GET",
+      url: "/bubblesort",
+    }).then((response) => {
+      const res = response.data.steps;
+      //   console.log(res);
+      setSortSteps([...res]);
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={getSteps}>Generate my steps</button>
+      <FixedArray props={sortSteps} />
     </div>
   );
 }

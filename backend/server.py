@@ -9,7 +9,27 @@ def	hello_world():
 
 @app.route('/bubblesort')
 def handle_bubble():
-	return
+	response = bubbleSort(getArray(10))
+	# response = ''.join(map(str, steps))
+	# print(response)
+	response_body = {
+		"steps" : response
+	}
+	return response_body
+
+@app.route('/selectionsort')
+def handle_select():
+	response_body = {
+		"steps" : selectionSort(getArray(10))
+	}
+	return response_body
+
+@app.route('/insertionsort')
+def handle_insertion():
+	response_body = {
+		"steps" : insertionSort(getArray(10))
+	}
+	return response_body
 
 def getArray(size):
 	return [random.randrange(-100,100) for i in range(size)]

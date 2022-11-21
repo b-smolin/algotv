@@ -1,5 +1,6 @@
 def bubbleSort(arr):
 	steps = []
+	steps.append(arr.copy())
 	size = len(arr)
 
 	for i in range(size-1):
@@ -14,10 +15,12 @@ def bubbleSort(arr):
 				swap = arr[j]
 				arr[j] = arr[j+1]
 				arr[j+1] = swap
+	print(steps)
 	return steps
 
 def selectionSort(arr):
 	steps = []
+	steps.append(arr.copy())
 	size = len(arr)
 
 	for i in range(size):
@@ -40,6 +43,7 @@ def selectionSort(arr):
 
 def insertionSort(arr):
 	steps = []
+	steps.append(arr.copy())
 	size = len(arr)
 
 	for i in range(1, size):
