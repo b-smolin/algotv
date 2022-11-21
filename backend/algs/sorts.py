@@ -15,7 +15,6 @@ def bubbleSort(arr):
 				swap = arr[j]
 				arr[j] = arr[j+1]
 				arr[j+1] = swap
-	print(steps)
 	return steps
 
 def selectionSort(arr):
