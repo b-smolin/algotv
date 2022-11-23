@@ -32,7 +32,7 @@ def handle_insertion():
 	return response_body
 
 def getArray(size):
-	return [random.randrange(-10,99) for i in range(size)]
+	return [random.randrange(-9,99) for i in range(size)]
 
 if __name__ == "__main__":
 	app.run()

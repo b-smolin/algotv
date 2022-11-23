@@ -5,6 +5,7 @@ import Shape from "../shapes/Shape";
 import "./fixed.css";
 
 function FixedArray({ props }) {
+  const FRAMELENGTH = 360;
   const data = props;
   const width = window.innerWidth - 200;
   const height = 550;
@@ -74,12 +75,10 @@ function FixedArray({ props }) {
       let timer = setInterval(() => {
         handleInstructions();
         curStep.current = curStep.current + 1;
-        // setCurrentStep(data[curStep.current]);
         if (curStep.current >= maxstep) {
-          //maxstep normally
           clearInterval(timer); //need to clear on refresh
         }
-      }, 100);
+      }, FRAMELENGTH);
       //   clearInterval(timer);
     }
   }, [props]);
@@ -98,31 +97,43 @@ function FixedArray({ props }) {
         setPointerData([...pointerData]);
       }
     } else if (command === "swap") {
-      //   const x2 = contentsData[i2]?.x;
       index1.current = instruction[1];
       index2.current = instruction[2];
-      console.log(instruction);
-
       setContentsData((contentsData) =>
         contentsData.map((element, i) => {
-          console.log(element, i);
           if (element.key === index1.current) {
             element.x = step * index2.current + 100;
             element.key = index2.current;
-            console.log(element, i, index1.current);
             return element;
           }
           if (element.key === index2.current) {
             element.x = step * index1.current + 100;
             element.key = index1.current;
-            console.log(element, i, index2.current, index1.current);
             return element;
           }
           return element;
         })
       );
     } else if (command === "compare") {
-      //   console.log(instruction);
+      index1.current = instruction[1];
+      index2.current = instruction[2];
+      setSquareData((squareData) =>
+        squareData.map((element) => {
+          if (element.key === index1.current || element.key === index2.current) {
+            element.fill = instruction[3] < instruction[4] ? "lightgreen" : "orange";
+            return element;
+          }
+          return element;
+        })
+      );
+      setTimeout(() => {
+        setSquareData((squareData) =>
+          squareData.map((element) => {
+            element.fill = "red";
+            return element;
+          })
+        );
+      }, FRAMELENGTH * 0.9);
     } else {
       console.error("unrecognized instruction");
     }
@@ -146,15 +157,15 @@ function FixedArray({ props }) {
     });
   };
 
-  const renderStep = (steps) => {
-    return (
-      steps && (
-        <div className="stepbox" key={currentStep}>
-          {steps[curStep.current]}
-        </div>
-      )
-    );
-  };
+  //   const renderStep = (steps) => {
+  //     return (
+  //       steps && (
+  //         <div className="stepbox" key={currentStep}>
+  //           {steps[curStep.current]}
+  //         </div>
+  //       )
+  //     );
+  //   };
   return (
     <div className="FixedArray">
       <div>
@@ -168,7 +179,7 @@ function FixedArray({ props }) {
           </Stage>
         )}
       </div>
-      <button
+      {/* <button
         className="seemore"
         // onClick={() => {
         //   setCurrentStep(currentStep + 1);
@@ -176,7 +187,7 @@ function FixedArray({ props }) {
       >
         See next step
       </button>
-      <div>{renderStep(steps)}</div>
+      <div>{renderStep(steps)}</div> */}
     </div>
   );
 }
