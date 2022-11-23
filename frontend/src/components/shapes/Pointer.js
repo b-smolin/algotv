@@ -3,6 +3,12 @@ import { Arrow } from "react-konva";
 
 const Pointer = (props) => {
   const { properties } = props;
+  const handleChange = () => {
+    this.arrow.to({
+      points: [properties.x, properties.y + 180, properties.x, properties.y + 25],
+      duration: 0.3,
+    });
+  };
   return (
     <Arrow
       key={properties.key}

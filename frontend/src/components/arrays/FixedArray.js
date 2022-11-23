@@ -25,6 +25,8 @@ function FixedArray({ props }) {
   const index1 = useRef(null);
   const index2 = useRef(null);
 
+  const changeSignal = new CustomEvent("onChange");
+
   //map the data for the boxes, their contents, and the pointers whenever we get new props
   useEffect(() => {
     const empty = [];
@@ -95,6 +97,7 @@ function FixedArray({ props }) {
           y: 50 + side,
         };
         setPointerData([...pointerData]);
+        // pointerData[i - 1].dispatchEvent(changeSignal);
       }
     } else if (command === "swap") {
       index1.current = instruction[1];
