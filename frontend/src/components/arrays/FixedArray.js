@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
+import { createPath } from "react-router-dom";
 import Shape from "../shapes/Shape";
 import "./fixed.css";
 
@@ -9,6 +10,7 @@ function FixedArray({ props }) {
   const height = 550;
   const len = props[0]?.length;
   const initial_array = props[0];
+  const maxstep = props?.length;
   const initial_pointers = props[1];
   const step = width / len - 20;
   const side = width / len - 30;
@@ -19,6 +21,8 @@ function FixedArray({ props }) {
   const [contentsData, setContentsData] = useState();
   const [pointerData, setPointerData] = useState([]);
   const curStep = useRef(1);
+  const index1 = useRef(null);
+  const index2 = useRef(null);
 
   //map the data for the boxes, their contents, and the pointers whenever we get new props
   useEffect(() => {
@@ -27,6 +31,8 @@ function FixedArray({ props }) {
     setSquareData((squareData) => [...empty]);
     setContentsData((contentsData) => [...empty]);
     setPointerData((pointerData) => [...empty]);
+    setCurrentStep(1);
+    curStep.current = 1;
     initial_array?.forEach((num, i) => {
       const square = {
         key: i,
@@ -64,14 +70,63 @@ function FixedArray({ props }) {
       };
       setPointerData((pointerData) => [...pointerData, ptr]);
     });
+    if (initial_array) {
+      let timer = setInterval(() => {
+        handleInstructions();
+        curStep.current = curStep.current + 1;
+        // setCurrentStep(data[curStep.current]);
+        if (curStep.current >= maxstep) {
+          //maxstep normally
+          clearInterval(timer); //need to clear on refresh
+        }
+      }, 100);
+      //   clearInterval(timer);
+    }
   }, [props]);
 
-  //   useEffect(() => {
-  //     if (steps.length === 0 || curStep.current >= steps.length) {
-  //       return;
-  //     }
-  //   });
+  const handleInstructions = () => {
+    const instruction = data[curStep.current];
+    let command = instruction[0];
+    if (command === "pointer") {
+      for (let i = 1; i < instruction.length; i++) {
+        pointerData[i - 1] = {
+          key: i,
+          type: "pointer",
+          x: step * instruction[i] + 100 + step / 2,
+          y: 50 + side,
+        };
+        setPointerData([...pointerData]);
+      }
+    } else if (command === "swap") {
+      //   const x2 = contentsData[i2]?.x;
+      index1.current = instruction[1];
+      index2.current = instruction[2];
+      console.log(instruction);
 
+      setContentsData((contentsData) =>
+        contentsData.map((element, i) => {
+          console.log(element, i);
+          if (element.key === index1.current) {
+            element.x = step * index2.current + 100;
+            element.key = index2.current;
+            console.log(element, i, index1.current);
+            return element;
+          }
+          if (element.key === index2.current) {
+            element.x = step * index1.current + 100;
+            element.key = index1.current;
+            console.log(element, i, index2.current, index1.current);
+            return element;
+          }
+          return element;
+        })
+      );
+    } else if (command === "compare") {
+      //   console.log(instruction);
+    } else {
+      console.error("unrecognized instruction");
+    }
+  };
   //rendering functions to make the return a little more usable.
   const renderSquare = (squareData) => {
     return squareData?.map((element, i) => {
@@ -95,7 +150,7 @@ function FixedArray({ props }) {
     return (
       steps && (
         <div className="stepbox" key={currentStep}>
-          {steps[currentStep]}
+          {steps[curStep.current]}
         </div>
       )
     );
@@ -115,9 +170,9 @@ function FixedArray({ props }) {
       </div>
       <button
         className="seemore"
-        onClick={() => {
-          setCurrentStep(currentStep + 1);
-        }}
+        // onClick={() => {
+        //   setCurrentStep(currentStep + 1);
+        // }}
       >
         See next step
       </button>
