@@ -8,14 +8,13 @@ def bubbleSort(arr):
 			#record pointers j and j+1
 			steps.append(["pointer", j, j+1])
 			# record comparison
-			steps.append(["compare", arr[j], arr[j+1]])
+			steps.append(["compare", j, j+1, arr[j], arr[j+1]]) #figure out how to actually handle this will cause problems for when we just hold a value (maybe -1?)
 			if arr[j] > arr[j+1]:
 				steps.append(["swap", j, j+1])
 				#record swap
 				swap = arr[j]
 				arr[j] = arr[j+1]
 				arr[j+1] = swap
-	print(steps)
 	return steps
 
 def selectionSort(arr):

@@ -19,7 +19,7 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={getSteps}>Generate my steps</button>
+      <button onClick={getSteps}>Show me bubblesort!</button>
       <FixedArray props={sortSteps} />
     </div>
   );

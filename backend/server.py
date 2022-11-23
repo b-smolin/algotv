@@ -9,7 +9,7 @@ def	hello_world():
 
 @app.route('/bubblesort')
 def handle_bubble():
-	response = bubbleSort(getArray(10))
+	response = bubbleSort(getArray(random.randrange(8,12)))
 	# response = ''.join(map(str, steps))
 	# print(response)
 	response_body = {
@@ -32,7 +32,7 @@ def handle_insertion():
 	return response_body
 
 def getArray(size):
-	return [random.randrange(-100,100) for i in range(size)]
+	return [random.randrange(-9,99) for i in range(size)]
 
 if __name__ == "__main__":
 	app.run()
